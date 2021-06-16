@@ -1,0 +1,99 @@
+{% extends 'base.html'%}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'contact.css' %}">
+{% endblock %}
+
+{% block title %}
+Contact
+{% endblock %}
+
+{% block body %}
+{% include "nav.html" %}
+{% if request.user.is_authenticated %}
+	<div class="split">
+		<div class="details">
+			<section class="contacts">
+				<div class="container">
+					<hr>
+						<form method="post">{% csrf_token %}
+							{{ form|crispy }}
+							<button class="btn btn-primary mt-2" type="submit">Update</button>
+						</form>
+				</div>
+			</section>
+		</div>
+		
+
+		<div class="tabs">
+			<ul class="tabs-list">
+				<li class="active"><a href="#tab1">Personal Twitter</a></li>
+				<li ><a href="#tab2">Brand Twitter</a></li>
+			</ul>
+			<div id="tab1" class="tab active">
+				{% if object.twitter_personal is not None %}
+					<a class="twitter-timeline" href="https://twitter.com/{{ object.twitter_personal }}?ref_src=twsrc^tfw">Tweets</a> 
+					<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+				{% else %}
+					<h4>No Personal Twitter Account</h4>
+				{% endif %}
+			</div>
+			<div id="tab2" class="tab">
+				{% if object.twitter_brand is not None %}
+					<a class="twitter-timeline" href="https://twitter.com/{{ object.twitter_brand }}?ref_src=twsrc^tfw">Tweets</a> 
+					<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+				{% else %}
+					<h4>No Brand Twitter Account</h4>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+{% else %}
+	<section class="contacts">
+		<div class="container">
+			<h1>Not Authenticated!</h1>
+		</div>
+	</section>
+{% endif %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+{% comment %} <script type="text/javascript">
+	document.getElementById('jsform').submit();
+</script> {% endcomment %}
+
+<script>
+	$(document).ready(function () {
+		setInterval(function () {
+			$("#completed").load(window.location.href + " #completed");
+		}, 600000);
+	});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+  $(".tabs-list li a").click(function(e){
+     e.preventDefault();
+  });
+
+  $(".tabs-list li").click(function(){
+     var tabid = $(this).find("a").attr("href");
+     $(".tabs-list li,.tabs div.tab").removeClass("active");   // removing active class from tab
+
+     $(".tab").hide();   // hiding open tab
+     $(tabid).show();    // show tab
+     $(this).addClass("active"); //  adding active class to clicked tab
+
+  });
+
+});
+</script>
+
+
+{% comment %} <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.esm.min.js"></script> {% endcomment %}
+{% endblock %}

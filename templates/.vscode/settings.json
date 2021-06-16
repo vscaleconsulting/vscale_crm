@@ -1,0 +1,23 @@
+{
+    "python.languageServer": "Jedi",
+    "terminal.integrated.fontFamily": "Consolas",
+    "files.autoSave": "onFocusChange",
+    "python.terminal.activateEnvInCurrentTerminal": true,
+    "python.terminal.activateEnvironment": true,
+    "files.associations": {
+        "**/*.html": "html",
+        "**/templates/**/*.html": "django-html",
+        "**/templates/**/*": "django-txt",
+        "**/requirements{/**,*}.{txt,in}": "pip-requirements"
+    },
+
+    
+    "beautify.language": {
+        "html": [
+            "htm",
+            "html",
+            "django-html"
+        ]
+    },
+}
+
