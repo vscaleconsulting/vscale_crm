@@ -12,7 +12,7 @@ class LandingPageView(generic.TemplateView):
 
 
 class UserCreateView(generic.CreateView):
-    template_name = 'contact-create.html'
+    template_name = 'user-create.html'
     form_class = UserModelForm
 
     def form_valid(self, form):
