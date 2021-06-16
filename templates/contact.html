@@ -17,12 +17,17 @@ Contact
 		<div class="details">
 			<section class="contacts">
 				<div class="container">
-					<hr>
+						<div class="contact_button">
+						{% if object.telegram is not None %}
+							<button class="btn btn-info mt-2" onclick="location.href='{{ object.telegram }}'">Telegram</button>
+						{% endif %}
+						</div>
 						<form method="post">
 							{% csrf_token %}
 							{{ form|crispy }}
 							<button class="btn btn-primary mt-2" type="submit">Update</button>
 						</form>
+						<button class="btn btn-danger mt-2" onclick="location.href='{% url 'contact-delete' contact.id %}'">Delete</button>
 				</div>
 			</section>
 		</div>
@@ -65,14 +70,6 @@ Contact
 	document.getElementById('jsform').submit();
 </script> {% endcomment %}
 
-<script>
-	$(document).ready(function () {
-		setInterval(function () {
-			$("#completed").load(window.location.href + " #completed");
-		}, 600000);
-	});
-</script>
-
 <script type="text/javascript">
 $(document).ready(function(){
 
@@ -92,6 +89,7 @@ $(document).ready(function(){
 
 });
 </script>
+
 
 
 {% comment %} <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"></script>

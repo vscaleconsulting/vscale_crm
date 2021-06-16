@@ -15,15 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from leads.views import LandingPageView, UserCreateView, ContactListView, ContactView
+from leads.views import LandingPageView, UserCreateView, ContactListView, ContactView, CreateContactView, ContactDeleteView
 from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
     path('', LandingPageView.as_view(), name='home-page'),
+    path('contacts/add', CreateContactView.as_view(), name='contact-create'),
     path('create/', UserCreateView.as_view(), name='user-create'),
     path('admin/', admin.site.urls),
     path('contacts/', ContactListView.as_view(), name='contact-list'),
     path('contacts/<pk>', ContactView.as_view(), name='contact-info'),
+    path('contacts/<pk>/delete', ContactDeleteView.as_view(), name='contact-delete'),
     path('login/', LoginView.as_view(), name='login-page'),
     path('logout/', LogoutView.as_view(), name='logout-page'),
 ]

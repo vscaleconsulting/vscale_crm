@@ -1,4 +1,4 @@
-from django.shortcuts import render, reverse
+from django.shortcuts import render, reverse, redirect
 from django.views import generic
 from django.contrib.auth import login
 from django.http import HttpResponseRedirect
@@ -12,7 +12,7 @@ class LandingPageView(generic.TemplateView):
 
 
 class UserCreateView(generic.CreateView):
-    template_name = 'user-create.html'
+    template_name = 'contact-create.html'
     form_class = UserModelForm
 
     def form_valid(self, form):
@@ -24,12 +24,12 @@ class UserCreateView(generic.CreateView):
         return super(UserCreateView, self).form_valid(form)
 
     def get_success_url(self):
-        return render('contacts')
+        return reverse('home-page')
+        # return reverse('home')
 
 
 class ContactListView(generic.ListView):
     template_name = 'contact-list.html'
-
     queryset = Contact.objects
 
     def get_queryset(self, *args, **kwargs):
@@ -41,6 +41,43 @@ class ContactListView(generic.ListView):
 #     template_name = 'contact.html'
 #     queryset = Contact.objects
 
+class CreateContactView(generic.CreateView):
+    template_name = 'contact-create.html'
+    model = Contact
+    fields = ['name',
+              'title',
+              'company',
+              'phone',
+              'email',
+              'website',
+              'telegram',
+              'twitter_personal',
+              'twitter_brand',
+              'linkedin',
+              'birthday',
+              'address',
+              'status',
+              'relationship',
+              'notes'
+              ]
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(CreateContactView, self).form_valid(form)
+        # return redirect(reverse('contact-list'))
+
+    def get_success_url(self):     
+       return reverse('contact-list')
+
+class ContactDeleteView(generic.DeleteView):
+    template_name = 'contact-delete.html'
+    model = Contact
+
+    # def get_query_set(self):
+    #     return Contact.Objects.all()
+
+    def get_success_url(self):
+        return reverse('contact-list')
 
 class ContactView(generic.edit.UpdateView):
     template_name = 'contact.html'
@@ -63,8 +100,4 @@ class ContactView(generic.edit.UpdateView):
               ]
     
     def get_success_url(self):
-        # return HttpResponseRedirect(self.request.path_info)
-        if self.request.user.is_authenticated:
-            return reverse('contact-info', kwargs={'pk': self.object.id})
-        else:
-            print('lol')
+        return reverse('contact-info', kwargs={'pk': self.object.id})
