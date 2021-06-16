@@ -1,0 +1,124 @@
+.contacts{
+    margin-top: 70px;
+}
+.thead{
+    background-color: #f3f2f2;
+    padding: 10px;
+}
+.box img{
+    width: 50px;
+}
+.box{
+    background-color: #f3f2f2;
+    border: 1px solid #f3f2f2;
+    border-radius: 5px;
+    padding: 10px 10px;
+}
+.repopulate{
+    background-color: rgb(201, 99, 99);
+    margin-top: 5px;
+    margin-left: 15px;
+    padding: 5px 15px;
+    border-radius: 5px; 
+}
+.completed{
+    margin-top: 70px;
+}
+.right{
+    text-align: right;
+}
+.split {
+    height:100%;
+    z-index: -1;
+    overflow: auto;
+  }
+
+  .details {
+    float: left;
+    width: 50%;
+    overflow:scroll;
+  }
+
+  /* .timeline {
+      height: 600px;
+    float: right;
+    width: 50%;
+  } */
+
+  /* tabs */
+  .tabs{
+    width:50%;
+    height:100%;
+    float: right;
+    overflow: scroll;
+}
+
+/* tab list item */
+.tabs .tabs-list{
+    list-style:none;
+    margin:0px;
+    padding:0px;
+}
+.tabs .tabs-list li{
+    width:100px;
+    float:left;
+    margin:0px;
+    margin-right:2px;
+    padding:10px 5px;
+    text-align: center;
+    background-color:cornflowerblue;
+    border-radius:3px;
+}
+.tabs .tabs-list li:hover{
+    cursor:pointer;
+}
+.tabs .tabs-list li a{
+    text-decoration: none;
+    color:white;
+}
+
+/* Tab content section */
+.tabs .tab{
+    display:none;
+    width:96%;
+    min-height:250px;
+    height:auto;
+    border-radius:3px;
+    padding:20px 15px;
+    background-color:lavender;
+    color:darkslategray;
+    clear:both;
+}
+.tabs .tab h3{
+    border-bottom:3px solid cornflowerblue;
+    letter-spacing:1px;
+    font-weight:normal;
+    padding:5px;
+}
+.tabs .tab p{
+    line-height:20px;
+    letter-spacing: 1px;
+}
+
+/* When active state */
+.active{
+    display:block !important;
+}
+.tabs .tabs-list li.active{
+    background-color:lavender !important;
+    color:black !important;
+}
+.active a{
+    color:black !important;
+}
+
+/* media query */
+@media screen and (max-width:360px){
+    .tabs{
+        margin:0;
+        width:96%;
+    }
+    .tabs .tabs-list li{
+        width:80px;
+    }
+}
