@@ -33,11 +33,11 @@
     overflow: auto;
   }
 
-  .details {
+.details {
     float: left;
-    width: 50%;
+    width: 60%;
     overflow:scroll;
-  }
+}
 
   /* .timeline {
       height: 600px;
@@ -46,8 +46,8 @@
   } */
 
   /* tabs */
-  .tabs{
-    width:50%;
+.tabs{
+    width:40%;
     height:100%;
     float: right;
     overflow: scroll;

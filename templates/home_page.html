@@ -32,9 +32,8 @@ Login Page
             {% endif %}
 
             {% if request.user.is_staff %}
-                {% comment %} <button class="leadsBtn" onclick="location.href='{% url 'user-list' %}'">Agents</button> {% endcomment %}
+                <button class="leadsBtn" onclick="location.href='{% url 'contact-list' %}'">Contacts</button>
                 <button class="leadsBtn" onclick="location.href='/admin'">Admin</button>
-                {% comment %} <button class="leadsBtn" onclick="location.href='{% url 'add-leads' %}'">Add Leads</button> {% endcomment %}
                 
             {% endif %}
 
