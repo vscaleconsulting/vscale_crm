@@ -80,14 +80,11 @@ class ContactDeleteView(generic.DeleteView):
     template_name = 'contact-delete.html'
     model = Contact
 
-    def form_valid(self, form):
-        remove_extra(self.request.user)
-        return super(ContactDeleteView, self).form_valid(form)
-
-    # def get_query_set(self):
-    #     return Contact.Objects.all()
+    # def form_valid(self, form):
+    #     return super(ContactDeleteView, self).form_valid(form)
 
     def get_success_url(self):
+        remove_extra(self.request.user, self.object)
         return reverse('contact-list')
 
 

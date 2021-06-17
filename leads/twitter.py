@@ -42,20 +42,25 @@ def add_to_list(user, contact):
         ret2 = False
     return ret1, ret2
 
-def remove_extra(user):
+def remove_extra(user, contact=None):
     contacts = Contact.objects.filter(user=user).all()
     handles = []
-    for contact in contacts:
-        if contact.twitter_personal is not None:
-            handles.append(contact.twitter_personal.lower())
-        if contact.twitter_brand is not None:
-            handles.append(contact.twitter_brand.lower())
+    for cntct in contacts:
+        if contact is not None and cntct.id == contact.id: 
+            continue
+        if cntct.twitter_personal is not None:
+            handles.append(cntct.twitter_personal.lower())
+        if cntct.twitter_brand is not None:
+            handles.append(cntct.twitter_brand.lower())
+            
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
     api = tweepy.API(auth, wait_on_rate_limit=True)
 
     list_id = int(user.twitter_list.split('/')[-1])
     members = api.list_members(list_id = list_id)
+    print(handles)
+    print([m.screen_name for m in members])
     for member in members:
         if member.screen_name.lower() not in handles:
             print('removing', member.screen_name, member.id)
