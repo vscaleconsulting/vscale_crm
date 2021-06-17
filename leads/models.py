@@ -3,7 +3,8 @@ from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
-    pass
+    twitter_list = models.CharField(max_length=255, null=True, blank=True)
+    
 
 class Contact(models.Model):
 

@@ -2,6 +2,7 @@ from django.shortcuts import render, reverse, redirect
 from django.views import generic
 from django.contrib.auth import login
 from django.http import HttpResponseRedirect
+from .twitter import *
 
 from .forms import UserModelForm
 from .models import User, Contact
@@ -18,9 +19,10 @@ class UserCreateView(generic.CreateView):
     def form_valid(self, form):
         user = form.save()
         user.set_password(user.password)
+        user.twitter_list = create_list(user)
         user.save()
+
         # user = authenticate(username=user.username, password=user.password)
-        login(self.request, user)
         return super(UserCreateView, self).form_valid(form)
 
     def get_success_url(self):
@@ -40,6 +42,7 @@ class ContactListView(generic.ListView):
 # class ContactView(generic.DetailView):
 #     template_name = 'contact.html'
 #     queryset = Contact.objects
+
 
 class CreateContactView(generic.CreateView):
     template_name = 'contact-create.html'
@@ -63,21 +66,30 @@ class CreateContactView(generic.CreateView):
 
     def form_valid(self, form):
         form.instance.user = self.request.user
+        contact = form.save()
+        add_to_list(self.request.user, contact)
+
         return super(CreateContactView, self).form_valid(form)
         # return redirect(reverse('contact-list'))
 
-    def get_success_url(self):     
-       return reverse('contact-list')
+    def get_success_url(self):
+        return reverse('contact-list')
+
 
 class ContactDeleteView(generic.DeleteView):
     template_name = 'contact-delete.html'
     model = Contact
+
+    def form_valid(self, form):
+        remove_extra(self.request.user)
+        return super(ContactDeleteView, self).form_valid(form)
 
     # def get_query_set(self):
     #     return Contact.Objects.all()
 
     def get_success_url(self):
         return reverse('contact-list')
+
 
 class ContactView(generic.edit.UpdateView):
     template_name = 'contact.html'
@@ -98,6 +110,13 @@ class ContactView(generic.edit.UpdateView):
               'relationship',
               'notes'
               ]
-    
+
+    def form_valid(self, form):
+        contact = form.save()
+        remove_extra(self.request.user)
+        add_to_list(self.request.user, contact)
+
+        return super(ContactView, self).form_valid(form)
+
     def get_success_url(self):
         return reverse('contact-info', kwargs={'pk': self.object.id})

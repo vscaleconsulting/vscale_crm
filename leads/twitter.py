@@ -1,3 +1,4 @@
+from .models import Contact
 import tweepy
 
 consumer_key = "kPTJKLaiwskJHkTbVtlmKdGjC"
@@ -30,7 +31,7 @@ def add_to_list(user, contact):
     auth.set_access_token(access_token, access_token_secret)
     api = tweepy.API(auth, wait_on_rate_limit=True)
 
-    list_id = int(user.tw_list.split('/')[-1])
+    list_id = int(user.twitter_list.split('/')[-1])
     try:
         api.add_list_member(list_id=list_id, screen_name=contact.twitter_personal)
     except:
@@ -40,3 +41,23 @@ def add_to_list(user, contact):
     except:
         ret2 = False
     return ret1, ret2
+
+def remove_extra(user):
+    contacts = Contact.objects.filter(user=user).all()
+    handles = []
+    for contact in contacts:
+        if contact.twitter_personal is not None:
+            handles.append(contact.twitter_personal.lower())
+        if contact.twitter_brand is not None:
+            handles.append(contact.twitter_brand.lower())
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_token_secret)
+    api = tweepy.API(auth, wait_on_rate_limit=True)
+
+    list_id = int(user.twitter_list.split('/')[-1])
+    members = api.list_members(list_id = list_id)
+    for member in members:
+        if member.screen_name.lower() not in handles:
+            print('removing', member.screen_name, member.id)
+            api.remove_list_member(list_id = list_id, screen_name = member.screen_name)
+
