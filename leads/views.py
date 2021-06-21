@@ -5,7 +5,8 @@ from django.http import HttpResponseRedirect
 from .twitter import *
 
 from .forms import UserModelForm
-from .models import User, Contact
+from .models import User, Contact, TelegramMessage
+from .functions import get_user_id
 
 
 class LandingPageView(generic.TemplateView):
@@ -66,6 +67,15 @@ class CreateContactView(generic.CreateView):
 
     def form_valid(self, form):
         form.instance.user = self.request.user
+        if form.instance.telegram is None or form.instance.telegram == '':
+            form.instance.telegram_id = None
+        else:
+            uid = get_user_id(form.instance.telegram)
+            if uid not in [-1, -2]:
+                form.instance.telegram_id = uid
+            else:
+                form.instance.telegram_id = None
+                form.instance.telegram = form.instance.telegram + '(!invalid ID)'
         contact = form.save()
         add_to_list(self.request.user, contact)
 
@@ -107,8 +117,22 @@ class ContactView(generic.edit.UpdateView):
               'relationship',
               'notes'
               ]
-
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['chat'] = TelegramMessage.objects.filter(peer_id=self.object.telegram_id).all()
+        return context
+    
     def form_valid(self, form):
+        if form.instance.telegram is None or form.instance.telegram == '':
+            form.instance.telegram_id = None
+        else:
+            uid = get_user_id(form.instance.telegram)
+            if uid not in [-1, -2]:
+                form.instance.telegram_id = uid
+            else:
+                form.instance.telegram_id = None
+                form.instance.telegram = form.instance.telegram + '(!invalid ID)'
         contact = form.save()
         remove_extra(self.request.user)
         add_to_list(self.request.user, contact)

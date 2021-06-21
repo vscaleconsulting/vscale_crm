@@ -19,6 +19,7 @@ class Contact(models.Model):
     email = models.EmailField(unique=True, null=True, blank=True)
     website = models.CharField(max_length=512, null=True, blank=True)
     telegram = models.CharField(max_length=255, null=True, blank=True)
+    telegram_id = models.IntegerField(null=True, blank=True)
     twitter_personal = models.CharField(max_length=255, null=True, blank=True)
     twitter_brand = models.CharField(max_length=255, null=True, blank=True)
     linkedin = models.CharField(max_length=255, null=True, blank=True)
@@ -44,7 +45,19 @@ class Contact(models.Model):
     def __str__(self):
         return f'{self.name}'
 
-    
-class Timeline:
 
+class Timeline:
     pass
+
+
+class TelegramMessage(models.Model):
+    message_id = models.IntegerField()
+    sender_ph = models.IntegerField()
+    from_id = models.IntegerField()
+    peer_id = models.IntegerField()
+    datetime = models.DateTimeField()
+    message = models.TextField()
+    out = models.BooleanField()
+    
+    def __str__(self):
+        return f'message: {self.message}, peer: {self.peer_id}, sender_ph: +{self.sender_ph}'

@@ -32,11 +32,11 @@ Contact
 			</section>
 		</div>
 		
-
 		<div class="tabs">
 			<ul class="tabs-list">
 				<li class="active"><a href="#tab1">Personal Twitter</a></li>
 				<li ><a href="#tab2">Brand Twitter</a></li>
+				<li ><a href="#tab3">Telegram</a></li>
 			</ul>
 			<div id="tab1" class="tab active">
 				{% if object.twitter_personal is not None %}
@@ -53,6 +53,11 @@ Contact
 				{% else %}
 					<h4>No Brand Twitter Account</h4>
 				{% endif %}
+			</div>
+			<div id="tab3" class="tab">
+				{% for message in chat %}
+					{{ message.message }}
+				{% endfor %}
 			</div>
 		</div>
 	</div>
