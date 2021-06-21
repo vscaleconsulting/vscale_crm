@@ -47,37 +47,41 @@ Contact
 				{% endif %}
 			</div>
 			<div id="tab2" class="tab">
-				{% if object.twitter_brand is not None %}
-					<a class="twitter-timeline" href="https://twitter.com/{{ object.twitter_brand }}?ref_src=twsrc^tfw">Tweets</a> 
-					<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-				{% else %}
-					<h4>No Brand Twitter Account</h4>
-				{% endif %}
-			</div>
-			<div class='tryingtoscroll'>
-				<div id="tab3" class="tab">
-					
-					{% for message in chat %}
-						{% if message.out %}					
-							<p id="botStarterMessage" class="botText"><span>{{ message.message }}</span></p>
-									
-							{% else %}
-							<p id="botStarterMessage" class='userText'><span>{{ message.message }}</span></p>
-												
-						{% endif %}
-					{% endfor %}
-					<hr>
-						
-				</div>
+				
+					{% if object.twitter_brand is not None %}
+						<a class="twitter-timeline" href="https://twitter.com/{{ object.twitter_brand }}?ref_src=twsrc^tfw">Tweets</a> 
+						<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+					{% else %}
+						<h4>No Brand Twitter Account</h4>
+					{% endif %}
 				
 			</div>
-			<div class='sendMessage'>
+			
+			<div id="tab3" class="tab">
+				<div id='thisischat'>
+				{% comment %} <div class='tryingtoscroll'> {% endcomment %}
+					{% for message in chat %}
+						{% if message.out %}					
+							<p id="botStarterMessage" class="userText"><span>{{ message.message }}</span></p>
+									
+							{% else %}
+							<p id="botStarterMessage" class='botText'><span>{{ message.message }}</span></p>
+													
+						{% endif %}
+					{% endfor %}
+					
+						
+				</div>
 				<form method='post'>
 						{% csrf_token %}
 						{{ message_form|crispy }}
-						<button name="save_message" class="btn btn-primary mt-2" type='submit'>Send</button>
+						<button id='msgsubmit' name="save_message" class="btn btn-primary mt-2" type='submit'>Send</button>
 				</form>
+				<div>
+				
+				</div>
 			</div>
+			
 				
 			</div>
 			
@@ -93,6 +97,21 @@ Contact
 {% endif %}
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+<script>
+	$(document).ready(function () {
+		setInterval(function () {console.log('here');
+			$("#thisischat").load(window.location.href + " #thisischat");
+		}, 3000);
+	});
+</script>
+
+<script>
+	setTimeout (function() {
+	$('#msgsubmit').load(window.location.href + ' #msgsubmit');
+	}, 1000);
+</script>
 
 {% comment %} <script type="text/javascript">
 	document.getElementById('jsform').submit();
@@ -125,10 +144,3 @@ $(document).ready(function(){
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.esm.min.js"></script> {% endcomment %}
 {% endblock %}
 
-<script>
-	$(document).ready(function () {
-		setInterval(function () {
-			$("#completed").load(window.location.href + " #completed");
-		}, 600000);
-	});
-</script>

@@ -144,11 +144,10 @@ class ContactView(generic.edit.UpdateView):
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         if 'save_message' in request.POST:
-
             send_message('dummy', self.object.telegram, request.POST['Message'])
             return HttpResponseRedirect(reverse('contact-info', kwargs={'pk': self.kwargs['pk']}))
+
         elif 'save_details' in request.POST:
-            print('asd')
             # self.form_valid(self.get_form_class()(request.POST))
             return super().post(request, *args, **kwargs)
 
