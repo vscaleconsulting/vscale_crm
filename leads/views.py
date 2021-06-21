@@ -4,9 +4,9 @@ from django.contrib.auth import login
 from django.http import HttpResponseRedirect
 from .twitter import *
 
-from .forms import UserModelForm
+from .forms import UserModelForm, MessageForm
 from .models import User, Contact, TelegramMessage
-from .functions import get_user_id
+from .functions import get_user_id, send_message
 
 
 class LandingPageView(generic.TemplateView):
@@ -121,9 +121,11 @@ class ContactView(generic.edit.UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['chat'] = TelegramMessage.objects.filter(peer_id=self.object.telegram_id).all()
+        context['message_form'] = MessageForm()
         return context
     
     def form_valid(self, form):
+        print(form)
         if form.instance.telegram is None or form.instance.telegram == '':
             form.instance.telegram_id = None
         else:
@@ -138,6 +140,17 @@ class ContactView(generic.edit.UpdateView):
         add_to_list(self.request.user, contact)
 
         return super(ContactView, self).form_valid(form)
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if 'save_message' in request.POST:
+
+            send_message('dummy', self.object.telegram, request.POST['Message'])
+            return HttpResponseRedirect(reverse('contact-info', kwargs={'pk': self.kwargs['pk']}))
+        elif 'save_details' in request.POST:
+            print('asd')
+            # self.form_valid(self.get_form_class()(request.POST))
+            return super().post(request, *args, **kwargs)
 
     def get_success_url(self):
         return reverse('contact-info', kwargs={'pk': self.object.id})

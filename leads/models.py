@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
     twitter_list = models.CharField(max_length=255, null=True, blank=True)
-    
+
 
 class Contact(models.Model):
 
@@ -58,6 +58,6 @@ class TelegramMessage(models.Model):
     datetime = models.DateTimeField()
     message = models.TextField()
     out = models.BooleanField()
-    
+
     def __str__(self):
         return f'message: {self.message}, peer: {self.peer_id}, sender_ph: +{self.sender_ph}'
