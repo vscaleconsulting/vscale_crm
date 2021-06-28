@@ -46,7 +46,7 @@ sessions = read_csv('leads/sessions.csv')
 threads = []
 
 for _, session in sessions.iterrows():
-    session_str = session['sess_str1']
+    session_str = session['sess_str2']
     number = int(session['number'])
     threads.append(Thread(target=job, args=(session_str, number)))
 
