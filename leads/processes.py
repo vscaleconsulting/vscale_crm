@@ -47,7 +47,7 @@ threads = []
 
 for _, session in sessions.iterrows():
     session_str = session['sess_str1']
-    number = session['number']
+    number = int(session['number'])
     threads.append(Thread(target=job, args=(session_str, number)))
 
 for thread in threads:
