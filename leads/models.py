@@ -52,7 +52,7 @@ class Timeline:
 
 class TelegramMessage(models.Model):
     message_id = models.IntegerField()
-    sender_ph = models.IntegerField()
+    sender_ph = models.BigIntegerField()
     from_id = models.IntegerField()
     peer_id = models.IntegerField()
     datetime = models.DateTimeField()
