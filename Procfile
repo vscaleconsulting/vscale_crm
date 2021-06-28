@@ -1,2 +1,4 @@
-release: python manage.py makemigrations; python manage.py migrate; python manage.py shell < leads/processes.py
+release: python manage.py makemigrations; python manage.py migrate
+
 web: gunicorn vscale_crm.wsgi:application
+python manage.py shell < leads/processes.py
