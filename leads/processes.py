@@ -55,5 +55,5 @@ for thread in threads:
 
 print("threads spawned")
 
-for thread in processes:
+for thread in threads:
     thread.join()
